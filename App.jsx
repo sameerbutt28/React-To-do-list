@@ -3,22 +3,31 @@ import { useState } from "react";
 function App() {
   const [line, setLine] = useState([]);
   const [text, setText] = useState("");
+  const [marks, setMarks] = useState([]);
+
   const handleTaskChange = (e) => {
     setText(e.target.value);
   };
- 
+
   const addTask = () => {
     if (text) {
-      // this statement shows that it the text field has soem text in it only then the blow code will run otherwise the below code will not be executed.
-
       setLine([...line, text]);
+      setMarks([...marks, false]);
       setText("");
     }
   };
-  
-  const handleDelete = (indexDelete) => { //  "_" we also use this underscore as a convention because our main is target is approaching the index and deleteing the line on that index
-    setLine(line.filter((text, index) => index !== indexDelete));
+
+  const handleMark = (indexMark) => {
+    const updatedMarks = [...marks];
+    updatedMarks[indexMark] = !updatedMarks[indexMark];
+    setMarks(updatedMarks);
   };
+
+  const handleDelete = (indexDelete) => {
+    setLine(line.filter((text, index) => index !== indexDelete));
+    setMarks(marks.filter((mark, index) => index !== indexDelete));
+  };
+
   return (
     <div>
       <h1>To-Do List</h1>
@@ -26,21 +35,18 @@ function App() {
       <button onClick={addTask}>Add</button>
       <ol>
         {line.map((text, index) => (
-          <li
-            key={index}
-          >
-
-            {" "}
+          <li key={index} style={{ textDecoration: marks[index] ? "line-through" : "none" }}>
             {text}
-          
+            &nbsp;
+            <button onClick={() => handleMark(index)}>
+              {marks[index] ? 'Unmark' : 'Mark'}
+            </button>
+            &nbsp;
             <button onClick={() => handleDelete(index)}>Delete</button>
-
           </li>
         ))}
       </ol>
-       {/* <TodoList/> */}
     </div>
-   
   );
 }
 
