@@ -27,6 +27,33 @@ function App() {
     setLine(line.filter((text, index) => index !== indexDelete));
     setMarks(marks.filter((mark, index) => index !== indexDelete));
   };
+  const handleUp = (currentIndex) => {
+    if (currentIndex > 0) {
+      const updatedLine = [...line];
+      const updatedMarks = [...marks];
+
+      // Swap the items at currentIndex and currentIndex - 1
+      [updatedLine[currentIndex], updatedLine[currentIndex - 1]] = [updatedLine[currentIndex - 1], updatedLine[currentIndex]];
+      [updatedMarks[currentIndex], updatedMarks[currentIndex - 1]] = [updatedMarks[currentIndex - 1], updatedMarks[currentIndex]];
+
+      setLine(updatedLine);
+      setMarks(updatedMarks);
+    }
+  };
+
+  const handleDown = (currentIndex) => {
+    if (currentIndex < line.length - 1) {
+      const updatedLine = [...line];
+      const updatedMarks = [...marks];
+
+      // Swap the items at currentIndex and currentIndex + 1
+      [updatedLine[currentIndex], updatedLine[currentIndex + 1]] = [updatedLine[currentIndex + 1], updatedLine[currentIndex]];
+      [updatedMarks[currentIndex], updatedMarks[currentIndex + 1]] = [updatedMarks[currentIndex + 1], updatedMarks[currentIndex]];
+
+      setLine(updatedLine);
+      setMarks(updatedMarks);
+    }
+  };
 
   return (
     <div>
@@ -43,6 +70,12 @@ function App() {
             </button>
             &nbsp;
             <button onClick={() => handleDelete(index)}>Delete</button>
+            &nbsp;
+            <button onClick={() => handleUp(index)}>
+              Up
+            </button>
+            &nbsp;
+            <button onClick={() => handleDown(index)}>Down</button>
           </li>
         ))}
       </ol>
